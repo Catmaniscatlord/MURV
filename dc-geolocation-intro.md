@@ -5,93 +5,94 @@
 [//]: <> (you can also generate any of the output formats supported)
 [//]: <> (by pandoc, such as .html, .tex, and dozens of others)
 
+MURV
+===
+
 Introduction
-====
-This paper is split into three different sections, the process of creating \
+---
+
+This paper is split into three different sections, the process of creating 
 MURV, a technical overview of how MURV works, and finally what is left to be 
 accomplished with MURV.
 
-
-The story of MURV
+The story of MURV (Multilateration Using RSSI Values)
 =======
 
 MURV's Goal
 ---
 
 The goal of MURV is to allow for the tracking and geolocation of wireless 
-devices using RSSI values.
+devices using RSSI(Recieved Signal Strength Indicator) from APs (wireless access points) values.
 
 Initial Idea
 ---
 
-How the idea of MURV is not the story of trying to solve a particular
-problem, but rather the story of evolving interests. During my sophomore 
-year, I started messing around with hypo-cycloids and developed a little 
+The story of the creation of MURV is not the story of trying to solve a 
+particular problem, but rather the story of evolving interests. During my 
+sophomore year, I started messing around with hypo-cycloids and developed a  
 <a herf="https://www.desmos.com/calculator/f2owqmikqp">program</a> in an 
-online graphing calculator Desmos to graph them. Following that I made 
-something I liked to call the <a her="https://www.desmos.com/calculator/
-6m3qvvy5kc">bi-cycloid</a>, which drew a point based on the distance to 
-points rotating on two different circles. My initial idea for my project 
-was to take the bi-cycloid, and expand it into the third dimension. I 
-proposed this idea to my mentors they pushed the idea towards that of 
-making a program that could find the location of a point in the real 
-world using multitelemetry, which uses the measured distance from an unknown 
-point in space to 3 or more known points in space to locate the unknown 
-point. But, in order to perform multitelemetry we needed a way to get the 
-distance between our unknown point and our known points. We settled on using 
-RSSI values from access points(aka AP's or routers). Although this idea was 
-different from what I originally wanted to accomplish I was still interested 
-in it.
+online graphing calculator called Desmos to graph them. Following the 
+creation of that program I made another program called the <a her="https://
+www.desmos.com/calculator/6m3qvvy5kc">bi-cycloid</a>, which drew a point 
+based on the distance to points rotating on two different circles. My 
+initial idea for my current project was to take the bi-cycloid, and expand 
+it into the third dimension. I proposed this idea to my mentors about a 
+month before the internship started. My mentors Mark Galassi, who is an 
+experienced polymath in math and computer science, and Jason Schaefer, who 
+is a wizard at networking and communication systems, pushed me towards the  
+idea of making a program that could find the location of a point in the real 
+world using multilateration. This is a procress that uses the measured 
+distance from an unknown point in space to 3 or more known points in space 
+in order to locate the unknown point. However, in order to perform 
+multilateration we needed a way to obtain the distance between our unknown 
+point and our known points. We settled on using RSSI values from APs (more 
+commonly known as routers). Although this idea was different from what I 
+originally wanted to accomplish, I was still interested in it.
 
 Early Development
 -------------------
 
-The early development of this program was meant to get my head wrapped 
-around multitelemetry and ideas and concepts behind it. What I Initialy 
-developed was a crude form of multitelemetry that relied on exact distance 
-values to find an exact solution. This was done by pre-defining every points 
-location, and measuring their exact distance to the unknowns point using the 
-distance formula with both points coordinates. This allowed me to develop a 
-mathematical framework to perform the necessary multitelemetry and 
-understand it's concepts. Unfortunately this framework that I created would 
-be way to mathematically strict to deal with the noise and error in the real 
-world of measurement.
+The early development of this program allowed me to wrap my head around  
+multilateration and ideas and concepts behind it. What I initialy developed 
+was a crude form of multilateration that relied on exact distance values to 
+find an exact solution. This was done by pre-defining every- points' 
+location, and measuring their exact distance to the unknown point using the 
+distance formula with both points' coordinates. This allowed me to develop a 
+mathematical framework to perform the necessary multilateration and 
+understand its concepts. Unfortunately, this framework would is to 
+mathematically strict to deal with the noise and error of real world 
+measurement.
 
-From here I decided to move on from the mathematical side of the project to 
-the gathering of data side. One of my mentors, Jason Schaefer, lent me 4 AP's
-(access points) to allow me to gather some real world data, and to learn 
-more about what steps I would need to take to get my project to be something 
-useable in a real-world setting.
+At this point I decided to shift from the mathematical side of the project to the gathering of data. My mentor Jason, lent me four APs to allow me to gather real world data, and to learn more about what steps I would need to take to get my project useable in a real-world setting.
 
 Middle to Late Development
 --------------------------
 
 This began my process into researching how to get and log RSSI values. One 
 of my first approaches was to get the RSSI value of the mobile device from 
-the AP's and send it back to perform the multitelemetry. This proved to be 
-harder than expected for me so I decided to log the RSSI value of the AP's 
+the APs and send it back to perform the multilateration. This proved to be 
+harder than expected for me so I decided to log the RSSI value of the APs 
 from the mobile device. While I was researching how to do this I found a 
-github repository called rssi_module that seemed to accomplish the entirety 
-of my project. This was an important point in the developing of this project 
-because it showed me a way of accomplishing what I set out to do.
+github repository called rssi_module by villagomez that seemed to accomplish the entirety of my project. This was an important point in the development of this project because it presented a way to accomplish my project goal.
 
-I examined the code as best that I could and started developing my own code 
-to log the RSSI values from the AP's. I encountered several issues while 
-developing this code and getting it to do what I wanted it to do. One of 
-these issues was that when I tried logging the RSSI values from multiple 
-AP's, only the one that I was currently connected to updated its RSSI value. 
-This meant that in order to log someones position as they moved around I 
-would have to connect to each of the 4 necessary AP's before logging the 
-RSSI value. This causes the program to slow down dramatically due to the 
-time that it takes to switch networks. I had to find a new command that 
-would log the RSSI values even if it wasn't connected to that particular 
-network. Jason recommended that I use the command `sudo iw dev wlp1s0 scan`. 
-I implemented this command into the code and it worked wonderfully. 
+I examined the code and started developing my own code to log the RSSI 
+values from the APs. I encountered several issues while developing this code 
+and getting it to do what I wanted it to do. For example, when I tried 
+logging the RSSI values from multiple APs, only the one that I was currently 
+connected to updated its RSSI value. As a result, in order to log someone's 
+position as they moved around I had to connect to each of the four necessary 
+APs before logging the RSSI value. This causes the program to slow down 
+dramatically due to the time that it takes to switch networks. I had to find 
+a new command that would log the RSSI values even if it wasn't connected to 
+that particular network. Jason recommended that I use the command `sudo iw 
+dev wlp1s0 scan`. I implemented this command into the code and it worked 
+wonderfully. 
 
-Now I had to log the RSSI values and convert them to distances. Fortunately 
-this didn't take too long, only 2 or 3 days, but it was long enough that I 
-didn't have to time to develop a more robust multilateration system, 
-thankfully Mark Galassi (my other mentor) developed one that I could use.  
+Next, I had to log the RSSI values and convert them to distances. 
+Fortunately, this didn't take too long, only 2 or 3 days. Unfortunately it 
+was long enough that I didn't have to time to develop a more robust 
+multilateration system. Thankfully my mentor Mark Galassi developed one that 
+I could use.  
 
 
 MURV from a technical standpoint
@@ -111,11 +112,11 @@ include locating someone in an emergency, navigation within small
 areas (think of something like GPS for an apartment building), or
 tracking of that device.
 
-The only data self-location needs is the location of 4 known points
+The only data self-location needs is the location of four known points
 along with their distance to the unknown point. From there, what's
 necessary is the mathematical framework to convert that data into our
 physical location. To collect this data we obtain the information
-using wireless network access points (AP's).
+using wireless network access points (APs).
 
 This project has produced two things
 
@@ -152,7 +153,7 @@ area:
 
 We use the second command in our program due to this functionality and
 then filter away the networks and data we do not want. This leaves us
-with the RSSI value along with the SSID for the AP's that we
+with the RSSI value along with the SSID for the APs that we
 desire. Using the Free-space path loss formula (which determines how a
 signal gets quieter as it passes through free space) and rearranging
 it, we can achieve a distance in meters using the formula below.
@@ -182,18 +183,18 @@ The mathematics of geolocation
 ------------------------------
 
 In order to calculate the unknown position of a point (ex, ey, ez), we
-must have 4 known points with known locations in 3D space (an_x, an_y,
+must have four known points with known locations in 3D space (an_x, an_y,
 an_z) along with their distance to our unknown point(e_a1,e_a2,e_a3,e_a4). 
 From there we estimate the point (ex,ey,ez) so that the difference in the 
 distance from the estimated point to each AP and the measured distance is 
 minimized with an appropriate algorithm.
 
-In my setup I placed each of my 4 AP's on each vertex 1 meter square
+In my setup I placed each of my four APs on each vertex 1 meter square
 with my laptop in the middle as the wireless device. This shape was
-chosen due to its ease in marking the location of the AP's. I
+chosen due to its ease in marking the location of the APs. I
 collected data in this setup and saved it in TestValues.csv, the names
 at the top of the file reference to the SSID values of each AP. The
-diagram below depicts this, with the black circles representing AP's
+diagram below depicts this, with the black circles representing APs
 and the red circle depicting the laptop. All units are in meters.
 
 
@@ -259,16 +260,16 @@ How to run the software
    file. You will need to restart the process at step 4.
 #. Open up RSSIValues.py in the editor of your choice and edit the
    NETWORKS variable to the SSID values (the name of it) of the
-   AP's(access points aka routers) you have.
+   APs(access points aka routers) you have.
 #. Set the FREQUENCY variable to the bandwidth you are using for your
-   AP's to communicate.
+   APs to communicate.
 #. Now you can run the program in a terminal using `python
    ./RSSIValues.py`. This will output some logged distance data for 
    each AP to a file called RSSIValues.csv.
 #. You can now use the data presented in RSSIValues.csv, along with the 
-   known location of your 4 AP's and plug them into the file called 
+   known location of your four APs and plug them into the file called 
    emitter-real.csv. 
-#. Finally you can run the multitelemetry program with `python 
+#. Finally you can run the multilateration program with `python 
    ./measurements2location.py (method) (filename)`, here's an example 
    `python ./measurements2location.py simplex emitter-sim.csv` 
 
@@ -278,8 +279,8 @@ Further Development
 I don't believe that I am done working on this project. There are still 
 thing s that i wish to add in order to make this a product that could be 
 used in the real world. I would like to be able to do the initial idea of 
-having the data collected not by the device, but by the AP's. This would 
+having the data collected not by the device, but by the APs. This would 
 allow for the tracking of multiple devices at once. Then I can take that 
 location data and have it create a heat map of common paths. Another think I 
-would like to do is further develop the multitelemetry program so its more 
+would like to do is further develop the multilateration program so its more 
 efficient and uses better algorithms.     
