@@ -20,7 +20,7 @@ def main():
 
 
 
-    df.to_csv("test.csv")
+    df.to_csv("RSSIValues.csv")
 
 """    fig, ax = plt.subplots()
     ax.plot(times,dlog, label='mlatAlpha')

@@ -28,7 +28,7 @@ import numpy as np
 import scipy
 import scipy.optimize
 
-verbose = True
+verbose = False
 # method = 'hillclimbing'
 method = 'simplex'
 
@@ -39,12 +39,15 @@ def main():
     global method
     if len(sys.argv) == 2:
         method = sys.argv[1]
-    elif len(sys.argv) > 2:
+    if len(sys.argv) == 3:
+        method = sys.argv[1]
+        data = sys.argv[2]
+    elif len(sys.argv) > 3:
         os.stderr.write('*error* usage is %s [simplex|hillclimbing]' % sys.argv[0])
         sys.exit(1)
         
     prog_dir = os.path.dirname(sys.argv[0]) # get this program's directory
-    fpath = os.path.join(prog_dir, '..', 'data', 'emitter-sim.csv')
+    fpath = os.path.join(prog_dir, '..', 'data', data)
     print('# prog_dir, fpath:', prog_dir, fpath)
     ap_positions, measured_distances  = read_emitter_file(fpath)
     print('# AP_positions:', ap_positions)

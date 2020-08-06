@@ -46,24 +46,52 @@ in it.
 Early Development
 -------------------
 
-This early development was meant to get my head wrapped around 
-multitelemetry and ideas and concepts behind it. What I Initialy developed 
-was a crude form of multitelemetry that relied on exact distance values to 
-find an exact solution. This was done by pre-defining every points location, 
-and measuring their exact distance to the unknowns point using the distance 
-formula with both points coordinates. This allowed me to develop a 
+The early development of this program was meant to get my head wrapped 
+around multitelemetry and ideas and concepts behind it. What I Initialy 
+developed was a crude form of multitelemetry that relied on exact distance 
+values to find an exact solution. This was done by pre-defining every points 
+location, and measuring their exact distance to the unknowns point using the 
+distance formula with both points coordinates. This allowed me to develop a 
 mathematical framework to perform the necessary multitelemetry and 
 understand it's concepts. Unfortunately this framework that I created would 
 be way to mathematically strict to deal with the noise and error in the real 
 world of measurement.
 
-From here I decided to move on from the mathematical side of the project to the gathering of data side. One of my mentors, Jason Schaefer, lent me 4 AP's(access points) to allow me to gather some real world data, and to learn more about what steps I would need to take to get my project to be something useable in a real-world setting.
+From here I decided to move on from the mathematical side of the project to 
+the gathering of data side. One of my mentors, Jason Schaefer, lent me 4 AP's
+(access points) to allow me to gather some real world data, and to learn 
+more about what steps I would need to take to get my project to be something 
+useable in a real-world setting.
 
 Middle to Late Development
 --------------------------
 
+This began my process into researching how to get and log RSSI values. One 
+of my first approaches was to get the RSSI value of the mobile device from 
+the AP's and send it back to perform the multitelemetry. This proved to be 
+harder than expected for me so I decided to log the RSSI value of the AP's 
+from the mobile device. While I was researching how to do this I found a 
+github repository called rssi_module that seemed to accomplish the entirety 
+of my project. This was an important point in the developing of this project 
+because it showed me a way of accomplishing what I set out to do.
 
+I examined the code as best that I could and started developing my own code 
+to log the RSSI values from the AP's. I encountered several issues while 
+developing this code and getting it to do what I wanted it to do. One of 
+these issues was that when I tried logging the RSSI values from multiple 
+AP's, only the one that I was currently connected to updated its RSSI value. 
+This meant that in order to log someones position as they moved around I 
+would have to connect to each of the 4 necessary AP's before logging the 
+RSSI value. This causes the program to slow down dramatically due to the 
+time that it takes to switch networks. I had to find a new command that 
+would log the RSSI values even if it wasn't connected to that particular 
+network. Jason recommended that I use the command `sudo iw dev wlp1s0 scan`. 
+I implemented this command into the code and it worked wonderfully. 
 
+Now I had to log the RSSI values and convert them to distances. Fortunately 
+this didn't take too long, only 2 or 3 days, but it was long enough that I 
+didn't have to time to develop a more robust multilateration system, 
+thankfully Mark Galassi (my other mentor) developed one that I could use.  
 
 
 MURV from a technical standpoint
@@ -155,10 +183,10 @@ The mathematics of geolocation
 
 In order to calculate the unknown position of a point (ex, ey, ez), we
 must have 4 known points with known locations in 3D space (an_x, an_y,
-an_z) along with their distance to our unknown point
-(e_a1,e_a2,e_a3,e_a4). From there we estimate the point (ex,ey,ez) so
-that the difference in the distance from the estimated point to each
-AP and the measured distance is minimized with an appriate algorithm.
+an_z) along with their distance to our unknown point(e_a1,e_a2,e_a3,e_a4). 
+From there we estimate the point (ex,ey,ez) so that the difference in the 
+distance from the estimated point to each AP and the measured distance is 
+minimized with an appropriate algorithm.
 
 In my setup I placed each of my 4 AP's on each vertex 1 meter square
 with my laptop in the middle as the wireless device. This shape was
@@ -214,7 +242,7 @@ How to run the software
 
 #. Download and install python 3.8.
 #. Extract the name.zip file to a directory of your choosing.
-#. From your terminal run `pip install matplotlib numpy pandas`.
+#. From your terminal run `pip install scipy matplotlib numpy pandas`.
    This will install the necessary python packages.
    Next, make sure that the command `sudo iw dev wlp1s0
    scan` can run without needing a password.
@@ -234,8 +262,24 @@ How to run the software
    AP's(access points aka routers) you have.
 #. Set the FREQUENCY variable to the bandwidth you are using for your
    AP's to communicate.
-#. Now you finally run the program in a terminal using "python3
-   pathToFile/RSSIValues.py"
+#. Now you can run the program in a terminal using `python
+   ./RSSIValues.py`. This will output some logged distance data for 
+   each AP to a file called RSSIValues.csv.
+#. You can now use the data presented in RSSIValues.csv, along with the 
+   known location of your 4 AP's and plug them into the file called 
+   emitter-real.csv. 
+#. Finally you can run the multitelemetry program with `python 
+   ./measurements2location.py (method) (filename)`, here's an example 
+   `python ./measurements2location.py simplex emitter-sim.csv` 
 
-Further expansion
--- 
+Further Development
+=============== 
+
+I don't believe that I am done working on this project. There are still 
+thing s that i wish to add in order to make this a product that could be 
+used in the real world. I would like to be able to do the initial idea of 
+having the data collected not by the device, but by the AP's. This would 
+allow for the tracking of multiple devices at once. Then I can take that 
+location data and have it create a heat map of common paths. Another think I 
+would like to do is further develop the multitelemetry program so its more 
+efficient and uses better algorithms.     
