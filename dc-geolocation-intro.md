@@ -179,12 +179,12 @@ ${\bf ap}_i$ would be equal to the measured distance $d_i$.
 
 In other words this function:
 
-$$cost(e_guess) = Sum_i(||{\bf e_{guess}} - {\bf ap}_i||^2 - d_i^2)^2$$
+$$C({e_{g}}) = \sum_i(||{e_{g}} - {ap}_i||^2 - d_i^2)^2$$
 
 would be zero.  This kind of function that is zero at the perfect
 location, and bigger than zero elsewhere, is called a "cost function".
 
-One way to find the correct emitter position ${\bf emitter}$ is to
+One way to find the correct emitter position $emitter$ is to
 write a computer program that does "minimization of the cost
 function".  This is a vast and important area of programming.
 
@@ -192,6 +192,22 @@ I provide a program which reads a file with access point locations and
 measured distances, and finds the emitter location by minimizing the
 cost function.  The program is in the MURV repository in the directory
 `src/measurements2location.py`.
+
+Examples of how to run it and plot the results:
+
+~~~
+$ ./measurements2location.py simplex | grep VAL > simplex-values.dat
+$ gnuplot
+gnuplot> splot 'simplex-values.dat' using 2:3:4 with linespoints
+
+$ ./measurements2location.py hillclimbing | grep VAL > hillclimbing-values.dat
+$ gnuplot
+gnuplot> splot 'hillclimbing-values.dat' using 2:3:4 with linespoints
+
+You can also plot both together with:
+gnuplot> plot 'hillclimbing-values.dat' using 2:3:4 with linespoints
+gnuplot> replot 'simplex-values.dat' using 2:3:4 with linespoints
+~~~
 
 How to run the software
 -----------------------
@@ -213,12 +229,12 @@ How to run the software
    terminal. If the terminal says you have any syntax errors, press
    'x'. This will cancel all the changes you made to the sudoers
    file. You will need to restart the process at step 4.
-7. Open up RSSIValues.py in the editor of your choice and edit the
+#. Open up RSSIValues.py in the editor of your choice and edit the
    NETWORKS variable to the SSID values (the name of it) of the
    AP's(access points aka routers) you have.
-8. Set the FREQUENCY variable to the bandwidth you are using for your
+#. Set the FREQUENCY variable to the bandwidth you are using for your
    AP's to communicate.
-9. Now you finally run the program in a terminal using "python3
+#. Now you finally run the program in a terminal using "python3
    pathToFile/RSSIValues.py"
 
 Further expansion

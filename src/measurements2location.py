@@ -3,6 +3,21 @@
 """This program calculates an emitter position based on access point
 locations and an approximate measurement of the distance from each
 access point.
+
+You can run this and make plots like this:
+
+$ ./measurements2location.py simplex | grep VAL > simplex-values.dat
+$ gnuplot
+gnuplot> splot 'simplex-values.dat' using 2:3:4 with linespoints
+
+$ ./measurements2location.py hillclimbing | grep VAL > hillclimbing-values.dat
+$ gnuplot
+gnuplot> splot 'hillclimbing-values.dat' using 2:3:4 with linespoints
+
+You can also plot both together with:
+gnuplot> plot 'hillclimbing-values.dat' using 2:3:4 with linespoints
+gnuplot> replot 'simplex-values.dat' using 2:3:4 with linespoints
+
 """
 
 import os
@@ -14,13 +29,20 @@ import scipy
 import scipy.optimize
 
 verbose = True
-method = 'hillclimbing'
-# method = 'simplex'
+# method = 'hillclimbing'
+method = 'simplex'
 
 def main():
     """Procedure: read AP positions and distance measurements from a .csv
     file, then chose a starting point, then invoke an optimization function"""
-    
+
+    global method
+    if len(sys.argv) == 2:
+        method = sys.argv[1]
+    elif len(sys.argv) > 2:
+        os.stderr.write('*error* usage is %s [simplex|hillclimbing]' % sys.argv[0])
+        sys.exit(1)
+        
     prog_dir = os.path.dirname(sys.argv[0]) # get this program's directory
     fpath = os.path.join(prog_dir, '..', 'data', 'emitter-sim.csv')
     print('# prog_dir, fpath:', prog_dir, fpath)
@@ -41,7 +63,7 @@ def main():
         emitter_pos = opt_result.x
     else:
         sys.stderr.write('*error* we have no method %s at this time' % method)
-    print('RESULT:  ', emitter_pos)
+    print('RESULT:  ', *emitter_pos)
 
 def optimize_hillclimbing(calc_cost, e_guess, ap_positions, measured_distances):
     """An embarrassingly simple hillclimbing optimization"""
@@ -50,17 +72,15 @@ def optimize_hillclimbing(calc_cost, e_guess, ap_positions, measured_distances):
     for i in range(1000):
         e_guess = mutate(e_guess) # take the tentative step
         cost = calc_cost(e_guess, ap_positions, measured_distances)
-        if verbose:
-            print('  ', e_guess_old, '   ', cost_old, ' -> ', e_guess, '   ', cost)
+            # print('  ', e_guess_old, '   ', cost_old, ' -> ', e_guess, '   ', cost)
         if cost <= cost_old:     # did cost get lower or stay put?
+            if verbose:
+                print('VAL_COST:   ', *e_guess, '    ', cost)
             e_guess_old = e_guess
             cost_old = cost
-            if verbose:
-                print('      NEW:', e_guess)
         else:                   # or did it get higher?
             e_guess = e_guess_old
             cost = cost_old
-            pass
     return e_guess
 
 def calc_cost_embedded(x, *args):
@@ -76,8 +96,16 @@ def optimize_simplex(calc_cost, e_guess, ap_positions, measured_distances):
     just packages it up for the scipy.optimize method for Nelder-Mead
     """
     emitter_pos = scipy.optimize.minimize(calc_cost, e_guess, method='Nelder-Mead', 
-                                          args=(ap_positions, measured_distances))
+                                          args=(ap_positions, measured_distances),
+                                          callback=optimize_callback)
     return emitter_pos
+
+def optimize_callback(xk):
+    """Print information at each step in the scipy.optimize.minimize() approach."""
+    if not verbose:
+        return False
+    print('VAL:   ', *xk)
+    return False
 
 def mutate(pt):
     """Take a small step, drawing from a random distribution."""
@@ -88,8 +116,6 @@ def mutate(pt):
     shift = np.array([random.lognormvariate(mu, sigma)*(random.randint(0, 1)*2-1) for i in range(3)])
     # shift = np.array([random.gauss(mu, sigma) for i in range(3)])
     pt = pt + shift
-    if verbose:
-        print('SHIFT:', shift)
     return pt
 
 
@@ -101,7 +127,6 @@ def calc_cost(e_guess, ap_positions, measured_distances):
     sum = 0
     for (apos, md) in zip(ap_positions, measured_distances):
         d2 = distance_sq(apos, e_guess)
-        # print(apos, '   ', e_guess, ':   ', d2)
         sum += (d2 - md**2)**2
     return sum
 
