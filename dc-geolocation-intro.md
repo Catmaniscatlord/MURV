@@ -53,14 +53,14 @@ from them.
 To get a feeling for how this works, try the following at the command
 line of a GNU/Linux system:
 
-<code>sudo iw dev wlp1s0 link</code>
+```sudo iw dev wlp1s0 link```
 
 This command will give you some basic information about the wireless
 network you are currently connected to, while While this command will
 give you all of the information about all of the networks in your
 area:
 
-<code>sudo iw dev wlp1s0 scan</code>
+```sudo iw dev wlp1s0 scan```
 
 We use the second command in our program due to this functionality and
 then filter away the networks and data we do not want. This leaves us
@@ -82,8 +82,6 @@ $$d = 10 ^{((27.55 - (20 \times \log(f) + S)/20)}$$
 where d is the distance measured in meters, f is the frequency in
 hertz, and S is the signal level.
 
-$$ \frac{\partial \rho}{\partial t} + \nabla \cdot \vec{j} = 0 \,. \label{eq:continuity} $$
-
 Unfortunately, a big problem with using the signal strength with
 routers is how messy and scattered the signal can be, if you have that
 1 wifi dead zone in your house you will understand what I mean. To get
@@ -96,13 +94,13 @@ frequency can hopefully reduce any noise.
 The mathematics of geolocation
 ------------------------------
 
-In order to calculate the unknown position of a point (ex, ey, ez), we
-must have 4 known points with known locations in 3D space (an_x, an_y,
-an_z) along with their distance to our unknown point
-(e_a1,e_a2,e_a3,e_a4). From there we estimate the point (ex,ey,ez) so
-that the difference in the distance from the estimated point to each
-AP and the measured distance is minimized accordign to the least means
-square algorithm.
+In order to calculate the unknown position of a point $(e_x, e_y,
+e_z)$, we must have 4 known points with known locations in 3D space
+$({a_n}_x, {a_n}_y, {a_n}_z)$ along with their distance to our unknown
+point $(e_{a1},e_{a2},e_{a3},e_{a4})$. From there we estimate the
+point $(e_x,e_y,e_z)$ so that the difference in the distance from the
+estimated point to each AP and the measured distance is minimized
+accordign to the least means square algorithm.
 
 In my setup I placed each of my 4 routers on each vertex 1 meter
 square with my laptop in the middle as the wireless device. This shape
@@ -113,24 +111,47 @@ and the red circle depicting the laptop. All units are in meters.
 
 <!-- <img src="layout.png" width="200"> -->
 
-![Layout of the receivers](layout.png "layout of the receivers"){ width=200px }
+<!-- ![Layout of the receivers](layout.png "layout of the receivers"){ width=150px } -->
 
+![Layout of the receivers](layout.png "layout of the receivers"){ width=4cm }
+
+
+If our measurements were perfect, we would have that our position
+${\bf e_{guess}}$ would be the real position of the emitter.  This
+means that the distance between ${\bf e_{guess}}$ and an access point
+${\bf ap}_i$ would be equal to the measured distance $d_i$.
+
+In other words this function:
+
+$$cost(e_guess) = Sum_i(||{\bf e_{guess}} - {\bf ap}_i||^2 - d_i^2)^2$$
+
+would be zero.  This kind of function that is zero at the perfect
+location, and bigger than zero elsewhere, is called a "cost function".
+
+One way to find the correct emitter position ${\bf emitter}$ is to
+write a computer program that does "minimization of the cost
+function".  This is a vast and important area of programming.
+
+I provide a program which reads a file with access point locations and
+measured distances, and finds the emitter location by minimizing the
+cost function.  The program is in the MURV repository in the directory
+`src/measurements2location.py`.
 
 How to run the software
 -----------------------
 
 #. Download and install python 3.8.
 #. Extract the name.zip file to a directory of your choosing.
-#. From your terminal run <code>pip install matplotlib numpy
-   pandas</code> . This will install the necessary python packages.
-   Next, make sure that the command <code>sudo iw dev wlp1s0
-   scan</code> can run without needing a password.
-#. In a new terminal run <code>sudo visudo</code> . This will allow you to
+#. From your terminal run `pip install matplotlib numpy pandas`.
+   This will install the necessary python packages.
+   Next, make sure that the command `sudo iw dev wlp1s0
+   scan` can run without needing a password.
+#. In a new terminal run `sudo visudo` . This will allow you to
    edit your sudoers file (the file that delegates permissions for
    your device) using the nano text editor.
-#. Navigate to the end of the text file and type in <code>Username
-   ALL=NOPASSWD: /sbin/iw</code> , for example, <code>david
-   ALL=NOPASSWD: /sbin/iw</code>
+#. Navigate to the end of the text file and type in `Username
+   ALL=NOPASSWD: /sbin/iw` , for example, `david
+   ALL=NOPASSWD: /sbin/iw`
 #. Press ctrl+x to exit the file, next press y to save the modified
    buffer, then press enter.  NOTE: This should bring you back to your
    terminal. If the terminal says you have any syntax errors, press
