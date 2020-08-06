@@ -151,12 +151,12 @@ must have 4 known points with known locations in 3D space (an_x, an_y,
 an_z) along with their distance to our unknown point
 (e_a1,e_a2,e_a3,e_a4). From there we estimate the point (ex,ey,ez) so
 that the difference in the distance from the estimated point to each
-AP and the measured distance is minimized accordign to the least means
+AP and the measured distance is minimized according to the least means
 square algorithm.
 
-In my setup I placed each of my 4 routers on each vertex 1 meter
+In my setup I placed each of my 4 AP's on each vertex 1 meter
 square with my laptop in the middle as the wireless device. This shape
-was chosen due to its ease in marking the location of the AP's. The
+was chosen due to its ease in marking the location of the AP's. I collected data in this setup and saved it in TestValues.csv, the names at the top of the file reference to the SSID values of each AP. The
 diagram below depicts this, with the black circles representing AP's
 and the red circle depicting the laptop. All units are in meters.
 
