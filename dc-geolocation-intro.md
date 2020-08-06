@@ -5,7 +5,7 @@ Geolocation based on signal strength values
 
 [//]: <> (you can convert this file to pdf or html with)
 [//]: <> (pandoc dc-geolocation-intro.md -o dc-geolocation-intro.pdf)
-[//]: <> (pandoc dc-geolocation-intro.md -o dc-geolocation-intro.html)
+[//]: <> (pandoc --mathml dc-geolocation-intro.md -o dc-geolocation-intro.html)
 [//]: <> (you can also generate any of the output formats supported)
 [//]: <> (by pandoc, such as .html, .tex, and dozens of others)
 
@@ -71,8 +71,18 @@ it, we can achieve a distance in meters using the formula below.
 
 <!-- <img src="https://render.githubusercontent.com/render/math?math=\text{ distance}(\text{meters}) = 10 ^{((27.55 - {(20 \times \log_{10}(\text{ frequency}(\text{ Mhz})))} - \text{ signalLevel})/20)}"> -->
 
-${\rm distance}({\rm meters}) = 10 ^{((27.55 - (20 \times
-\log_{10}({\rm frequency}({\rm Mhz}))) + {\rm signalLevel})/20)}$
+
+$$distance(meters) = 10 ^{((27.55 - (20 \times
+\log_{10}(frequency(Mhz))) + signalLevel)/20)}$$
+
+or:
+
+$$d = 10 ^{((27.55 - (20 \times \log(f) + S)/20)}$$
+
+where d is the distance measured in meters, f is the frequency in
+hertz, and S is the signal level.
+
+$$ \frac{\partial \rho}{\partial t} + \nabla \cdot \vec{j} = 0 \,. \label{eq:continuity} $$
 
 Unfortunately, a big problem with using the signal strength with
 routers is how messy and scattered the signal can be, if you have that
