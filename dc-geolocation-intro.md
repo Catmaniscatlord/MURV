@@ -1,7 +1,7 @@
 
 [//]: <> (you can convert this file to pdf or html with)
 [//]: <> (pandoc dc-geolocation-intro.md -o dc-geolocation-intro.pdf)
-[//]: <> (pandoc --mathjax dc-geolocation-intro.md -o dc-geolocation-intro.html)
+[//]: <> (pandoc --mathml dc-geolocation-intro.md -o dc-geolocation-intro.html)
 [//]: <> (you can also generate any of the output formats supported)
 [//]: <> (by pandoc, such as .html, .tex, and dozens of others)
 
