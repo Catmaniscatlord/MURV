@@ -276,7 +276,15 @@ How to run the software
 Further Development
 =============== 
 
-I a not done working on this project. There are still things I wish to add in order to make this a product that could be used in the real world. For example, I would like to be able to do the initial idea of having the data collected not by the device, but by the APs. This would allow for a server to track multiple devices at once. Then I would take that location data and have it create a heat map of common paths. Another thing I would like to do is further develop the multilateration program so it uses more efficient algorithms.     
+I a not done working on this project. There are still things I wish to add 
+in order to make this a product that could be used in the real world. For 
+example, I would like to be able to do the initial idea of having the data 
+collected not by the device, but by the APs, having the devices cycle their 
+connection to eac AP. This would allow for a server to track multiple 
+devices at once. Then I would take that location data and have it create a 
+heat map of common paths. Another thing I would like to do is further 
+develop the multilateration program so it uses more efficient 
+algorithms.     
 
 Resources
 ========
