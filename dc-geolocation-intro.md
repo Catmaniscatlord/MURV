@@ -11,7 +11,7 @@ MURV
 Introduction
 ---
 
-This paper is split into three different sections, the process of creating 
+This paper is split into three different sections: the process of creating 
 MURV, a technical overview of how MURV works, and finally what is left to be 
 accomplished with MURV.
 
@@ -276,11 +276,8 @@ How to run the software
 Further Development
 =============== 
 
-I don't believe that I am done working on this project. There are still 
-thing s that i wish to add in order to make this a product that could be 
-used in the real world. I would like to be able to do the initial idea of 
-having the data collected not by the device, but by the APs. This would 
-allow for the tracking of multiple devices at once. Then I can take that 
-location data and have it create a heat map of common paths. Another think I 
-would like to do is further develop the multilateration program so its more 
-efficient and uses better algorithms.     
+I a not done working on this project. There are still things I wish to add in order to make this a product that could be used in the real world. For example, I would like to be able to do the initial idea of having the data collected not by the device, but by the APs. This would allow for a server to track multiple devices at once. Then I would take that location data and have it create a heat map of common paths. Another thing I would like to do is further develop the multilateration program so it uses more efficient algorithms.     
+
+Resources
+========
+<a herf="https://github.com/jvillagomez/rssi_module">https://github.com/jvillagomez/rssi_module</a>
