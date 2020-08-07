@@ -35,7 +35,7 @@ online graphing calculator called Desmos to graph them. Following the
 creation of that program I made another program called the <a her="https://
 www.desmos.com/calculator/6m3qvvy5kc">bi-cycloid</a>, which drew a point 
 based on the distance to points rotating on two different circles. My 
-initial idea for my current project was to take the bi-cycloid, and expand 
+initial idea for my current project was to take the bi-cycloid and expand 
 it into the third dimension. I proposed this idea to my mentors about a 
 month before the internship started. My mentors Mark Galassi, who is an 
 experienced polymath in math and computer science, and Jason Schaefer, who 
@@ -89,7 +89,7 @@ dev wlp1s0 scan`. I implemented this command into the code and it worked
 wonderfully. 
 
 Next, I had to log the RSSI values and convert them to distances. 
-Fortunately, this didn't take too long, only 2 or 3 days. Unfortunately it 
+Fortunately, this didn't take too long, only 2 or 3 days. Unfortunately, it 
 was long enough that I didn't have to time to develop a more robust 
 multilateration system. Thankfully my mentor Mark Galassi developed one that 
 I could use.  
@@ -189,7 +189,7 @@ From there we estimate the point (ex,ey,ez) so that the difference in the
 distance from the estimated point to each AP and the measured distance is 
 minimized with an appropriate algorithm.
 
-In my setup I placed each of my four APs on each vertex 1 meter square
+In my setup, I placed each of my four APs on each vertex 1 meter square
 with my laptop in the middle as the wireless device. This shape was
 chosen due to its ease in marking the location of the APs. I
 collected data in this setup and saved it in TestValues.csv, the names
@@ -204,7 +204,7 @@ and the red circle depicting the laptop. All units are in meters.
 If our measurements were perfect, we would have that our position
 ${\bf e_{guess}}$ would be the real position of the emitter.  This
 means that the distance between ${\bf e_{guess}}$ and an access point
-${\bf ap}_i$ would be equal to the measured distance $d_i$.
+$\{bf ap}_i$ would be equal to the measured distance $d_i$.
 
 In other words this function:
 
